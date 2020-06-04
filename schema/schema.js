@@ -6,24 +6,12 @@ const {
   GraphQLID,
   GraphQLInt,
   GraphQLList,
+  GraphQLNonNull,
 } = graphql;
 const _ = require("lodash");
 
 const Book = require("../models/book");
 const Author = require("../models/author");
-
-const books = [
-  { name: "Shubham", genre: "kumar", id: "1", authorId: "1" },
-  { name: "sanjay", genre: "kumar", id: "1", authorId: "1" },
-  { name: "Shivam", genre: "kumar", id: "2", authorId: "2" },
-  { name: "Siddesh", genre: "kumar", id: "3", authorId: "3" },
-  { name: "sunil", genre: "kumar", id: "3", authorId: "3" },
-];
-const authors = [
-  { name: "shrikant", age: 22, id: "1" },
-  { name: "sharukh", age: 21, id: "2" },
-  { name: "shahid", age: 20, id: "3" },
-];
 
 const BookType = new GraphQLObjectType({
   name: "Book",
@@ -119,8 +107,8 @@ const Mutation = new GraphQLObjectType({
     addAuthor: {
       type: AuthorType,
       args: {
-        name: { type: GraphQLString },
-        age: { type: GraphQLInt },
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        age: { type: new GraphQLNonNull(GraphQLInt) },
       },
       resolve(parent, args) {
         const author = new Author({
@@ -133,9 +121,9 @@ const Mutation = new GraphQLObjectType({
     addBook: {
       type: BookType,
       args: {
-        name: { type: GraphQLString },
-        genre: { type: GraphQLString },
-        authorId: { type: GraphQLID },
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        genre: { type: new GraphQLNonNull(GraphQLString) },
+        authorId: { type: new GraphQLNonNull(GraphQLID) },
       },
       resolve(parent, args) {
         console.log(args.authorId);
